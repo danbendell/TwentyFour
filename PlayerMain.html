@@ -1,23 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="TwentyFour">
 <head lang="en">
-    <link rel="stylesheet" type="text/css" href="StyleSheet.css">
+    <link rel="stylesheet" type="text/css" href="css/StyleSheet.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="js/MainPage.js"></script>
     <meta charset="UTF-8">
     <title>TwentyFour</title>
 </head>
 <body>
-<div class="mainContent">
-    <h1 id="title">Welcome to TwentyFour</h1>
-    <div>
-        <input id="username" type="text">
+    <div class="mainContent" >
+        <h1 id="title" class="mainText">Welcome to TwentyFour</h1>
+
+        <div class="username">
+            <p class="mainText" id="usernameText">Username</p>
+            <input id="username" type="text">
+        </div>
+
+        <div>
+            <input id="start" type="button" value="Start">
+        </div>
+        <p id="inputName" class="mainText">Hello world</p>
     </div>
-    <div>
-        <input id="start" type="button" value="Start">
-    </div>
-    <div>
-        <input type="button" value="Start">
-    </div>
-</div>
+
 
 </body>
 </html>
