@@ -1,11 +1,17 @@
+var express = require('express')
 var http = require('http');
-var express = require('express');
 
 var port = 8080;
 
 var app = express();
 app.use(express.static(__dirname + '/public'));
 
-require('./routes')(app); // configure our routes
+var httpServer = http.Server(app);
+httpServer.listen(port, function() {
+    console.log('Listening on port - ' + port);
+});
 
-app.listen(port);
+var io = require('socket.io').listen(httpServer);
+
+require('./routes')(app); // configure our routes
+require('./sockets')(io); // configure the socket

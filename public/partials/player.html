@@ -1,5 +1,4 @@
 <div class="mainContent" >
-    <div>{{tagline}}</div>
     <h1 id="title" class="mainText">Welcome to TwentyFour</h1>
 
     <div class="username">
@@ -7,9 +6,10 @@
         <input id="username" type="text" ng-model="name">
     </div>
 
-    <div>
-        <input id="start" type="button" value="Start">
+    <div ng-if="name.length > 0">
+        <p id="inputName" class="mainText">Welcome {{name}}</p>
+        <p>Connected to a game</p>
+        <input id="start" type="button" value="Start" ng-click="buttonClickingTime()">
     </div>
-    <p id="inputName" class="mainText">Welcome {{name}}</p>
 </div>
 
