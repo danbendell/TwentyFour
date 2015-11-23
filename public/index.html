@@ -8,15 +8,20 @@
     <script src="libs/angular-route/angular-route.min.js"></script>
     <script src="libs/jquery/dist/jquery.min.js"></script>
     <!--Written scripts-->
+    <!--Controllers-->
     <script src="js/controllers/mainController.js"></script>
     <script src="js/controllers/nerdController.js"></script>
+    <script src="js/controllers/gameController.js"></script>
+    <!--services-->
+    <script src="js/services/gameServices.js"></script>
+    <!--Other-->
     <script src="js/appRoutes.js"></script>
     <script src="js/app.js"></script>
+    <script src='socket.io/socket.io.js'></script>
     <meta charset="UTF-8">
     <title>TwentyFour</title>
 </head>
 <body>
-<script src='./socket.io/socket.io.js'></script>
     <div ng-view>
     </div>
 </body>

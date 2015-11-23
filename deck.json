@@ -1,0 +1,15 @@
+{"cards":[
+    {"ID":"AH", "colour":"red", "suit":"heart", "value":"A"},
+    {"ID":"2H", "colour":"red", "suit":"heart", "value":"2"},
+    {"ID":"3H", "colour":"red", "suit":"heart", "value":"3"},
+    {"ID":"4H", "colour":"red", "suit":"heart", "value":"4"},
+    {"ID":"5H", "colour":"red", "suit":"heart", "value":"5"},
+    {"ID":"6H", "colour":"red", "suit":"heart", "value":"6"},
+    {"ID":"7H", "colour":"red", "suit":"heart", "value":"7"},
+    {"ID":"8H", "colour":"red", "suit":"heart", "value":"8"},
+    {"ID":"9H", "colour":"red", "suit":"heart", "value":"9"},
+    {"ID":"10H", "colour":"red", "suit":"heart", "value":"10"},
+    {"ID":"JH", "colour":"red", "suit":"heart", "value":"J"},
+    {"ID":"QH", "colour":"red", "suit":"heart", "value":"Q"},
+    {"ID":"KH", "colour":"red", "suit":"heart", "value":"K"}
+]}
