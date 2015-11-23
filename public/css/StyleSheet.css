@@ -32,3 +32,15 @@
 #usernameText {
     padding-right: 15px;
 }
+
+.playingCard {
+    border-radius: 0.8em;
+    -webkit-border-radius: 0.8em;
+    border: 2px solid #cccccc;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    background-color: #FFFFFF;
+    padding: 20px;
+    width: 200px;
+    height: 300px;
+}

@@ -20,16 +20,13 @@ angular.module('GameController', []).controller('GameController', ['$scope', 'Ga
             $scope.currentCards.push(FindCard());
             $scope.currentCards.push(FindCard());
         }
-        else {
-
-        }
     };
 
     function FindCard() {
         var position = Math.round(Math.random() * $scope.deck.length) - 1;
         position = checkIfCardPositionValid(position);
         var card = $scope.deck[position];
-        $scope.deck.splice(position, 1);
+        removeCardFromDeck(position);
         return card;
     }
 
@@ -42,5 +39,9 @@ angular.module('GameController', []).controller('GameController', ['$scope', 'Ga
     function deckIsNotEmpty() {
         if($scope.deck.length > 0) return true;
         return false;
+    }
+
+    function removeCardFromDeck(position) {
+        $scope.deck.splice(position, 1);
     }
 }]);
