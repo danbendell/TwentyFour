@@ -1,17 +1,26 @@
-<div ng-repeat="card in currentCards">
-    {{card}}
+<div class="table" >
+    <div ng-repeat="card in currentCards">
+        <div class="cell {{card.suit}}">
+            <div class="playingCard">
+                <div class="corner">
+                    <span>{{card.value}}</span>
+                    <img class="suit" src="{{card.suitImageSrc}}">
+                </div>
+                <div ng-repeat="suitPos in card.css">
+                    <div class="suit-position small-suit {{suitPos.class}}">
+                        <img class="suit" src="{{card.faceImageSrc}}">
+                    </div>
+                </div>
+                <div class="right corner">
+                    <span>{{card.value}}</span>
+                    <img class="suit" src="{{card.suitImageSrc}}">
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 <div ng-if="deck.length <= 0">
     <p>There are no more cards</p>
 </div>
 <button ng-click="PickNextCards()">Next Cards</button>
-<div class="playingCard">
-    <div class="left corner">
-        <span>A</span>
-        <img class="suit" src="../images/club.svg">
-    </div>
-    <div class="right corner">
-        <span>A</span>
-        <img class="suit" src="../images/club.svg">
-    </div>
-</div>
