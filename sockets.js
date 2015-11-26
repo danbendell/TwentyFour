@@ -7,7 +7,6 @@ module.exports = function(io) {
 
     io.on('connection', function(socket){
         socket.emit('connected', {id: socket.id});
-        //console.log('User Connected');
 
         socket.on('createNewGame', function(player) {
             var isHost = true;
@@ -16,40 +15,43 @@ module.exports = function(io) {
             CreateNewGame(socket, gameId);
         });
 
-        socket.on('playerJoinGame', function(data, player) {
+        socket.on('playerJoinGame', function(roomData, player) {
             var isHost = false;
-            CreateNewPlayer(player, socket, isHost, data.gameId.roomId);
-            PlayerJoinGame(socket, data);
+            CreateNewPlayer(player, socket, isHost, roomData.roomId);
+            PlayerJoinGame(socket, roomData);
         });
 
         socket.on('getOpenGameRooms', function(){
             GetOpenGameRooms(socket);
         });
 
+        socket.on('nextCards', function(gameId){
+            console.log('sending new cards');
+            io.sockets.in(gameId).emit('sendingNewCards');
+        });
+
         socket.on('getHostCurrentCards', function() {
 
         });
 
-        socket.on('message', function(msg) {
-            console.log('user - ' + msg);
-        });
-
         socket.on('disconnect', function() {
             RemovePlayer(socket);
-            //console.log('user disconnected');
         });
     });
 
-    function PlayerJoinGame(socket, data) {
-        data.mySocketId = socket.id;
+    function PlayerJoinGame(socket, roomData) {
+        roomData.mySocketId = socket.id;
         // Join the room
-        socket.join(data.gameId);
+        socket.join(roomData.roomId);
 
-        setGameRoomToFull(data.gameId);
-        console.log('Sending game rooms');
-        GetOpenGameRooms(socket);
+        setGameRoomToFull(roomData);
+
+        //console.log('Sending game rooms');
+        //GetOpenGameRooms(socket);
+
         // Emit an event notifying the clients that the player has joined the room.
-        io.sockets.in(data.gameId).emit('playerJoinedRoom', getPlayerDetails(socket));
+        //socket.in(roomData.roomId).emit('playerJoinedRoom', getPlayerDetails(socket));
+        io.sockets.in(roomData.roomId).emit('playerJoinedRoom', getPlayerDetails(socket));
     }
 
     function NewGameID() {

@@ -17,15 +17,12 @@ angular.module('MainController', []).controller('MainController', ['$scope', '$l
         });
     });
 
-    $scope.JoinGame = function(roomID) {
-        var data = {
-          gameId:  roomID
-        };
+    $scope.JoinGame = function(roomData) {
         var player = {
             id: '',
             name: $scope.username
         };
-        $scope.socket.emit('playerJoinGame', data, player);
+        $scope.socket.emit('playerJoinGame', roomData, player);
     };
 
 }]);

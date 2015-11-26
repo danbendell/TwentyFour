@@ -10,6 +10,8 @@ angular.module('GameController', []).controller('GameController', ['$scope', 'Ga
     SetUpDeck();
 
     $scope.PickNextCards = function() {
+        console.log(SocketService.getGameRoomId());
+        $scope.socket.emit('nextCards', SocketService.getGameRoomId());
         $scope.currentCards = [];
         if(deckIsNotEmpty()){
             $scope.currentCards.push(FindCard());
@@ -18,6 +20,10 @@ angular.module('GameController', []).controller('GameController', ['$scope', 'Ga
             $scope.currentCards.push(FindCard());
         }
     };
+
+    $scope.socket.on('sendingNewCards', function() {
+       console.log('NEW CARDS');
+    });
 
     function SetUpDeck() {
         GameService.getCards()
