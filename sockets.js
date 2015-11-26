@@ -25,13 +25,12 @@ module.exports = function(io) {
             GetOpenGameRooms(socket);
         });
 
-        socket.on('nextCards', function(gameId){
-            console.log('sending new cards');
-            io.sockets.in(gameId).emit('sendingNewCards');
+        socket.on('currentCards', function(gameId, cards) {
+            socket.broadcast.to(gameId).emit('newCards', cards);
         });
 
-        socket.on('getHostCurrentCards', function() {
-
+        socket.on('stopSendingCards', function(gameId) {
+            io.sockets.in(gameId).emit('gotCardsStopSending');
         });
 
         socket.on('disconnect', function() {
@@ -50,8 +49,8 @@ module.exports = function(io) {
         //GetOpenGameRooms(socket);
 
         // Emit an event notifying the clients that the player has joined the room.
-        //socket.in(roomData.roomId).emit('playerJoinedRoom', getPlayerDetails(socket));
-        io.sockets.in(roomData.roomId).emit('playerJoinedRoom', getPlayerDetails(socket));
+        socket.emit('joinRoom', getPlayerDetails(socket));
+        io.sockets.in(roomData.roomId).emit('playerJoinedRoom');
     }
 
     function NewGameID() {

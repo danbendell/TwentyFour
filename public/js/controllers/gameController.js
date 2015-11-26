@@ -1,5 +1,6 @@
 angular.module('GameController', []).controller('GameController', ['$scope', 'GameService', 'SocketService', function($scope, GameService, SocketService) {
     const NUMBER_OF_CARDS = 13; //52;
+    var sendCardsInterval = 0;
     $scope.socket = SocketService.getSocket();
 
     //TODO: SEND DECK AND CURRENTCARDS TO THE OTHER PLAYER IN THE ROOM
@@ -7,11 +8,9 @@ angular.module('GameController', []).controller('GameController', ['$scope', 'Ga
     $scope.desk = [];
     $scope.currentCards = [];
 
-    SetUpDeck();
+    if (SocketService.getHostStatus() == true) SetUpDeck();
 
     $scope.PickNextCards = function() {
-        console.log(SocketService.getGameRoomId());
-        $scope.socket.emit('nextCards', SocketService.getGameRoomId());
         $scope.currentCards = [];
         if(deckIsNotEmpty()){
             $scope.currentCards.push(FindCard());
@@ -19,29 +18,42 @@ angular.module('GameController', []).controller('GameController', ['$scope', 'Ga
             $scope.currentCards.push(FindCard());
             $scope.currentCards.push(FindCard());
         }
+        $scope.socket.emit('currentCards', SocketService.getGameRoomId(), $scope.currentCards);
     };
 
-    $scope.socket.on('sendingNewCards', function() {
-       console.log('NEW CARDS');
+    $scope.socket.on('newCards', function(cards) {
+        console.log('NEW CARDS');
+        $scope.$apply(function () {
+            $scope.currentCards = cards;
+        });
+        $scope.socket.emit('stopSendingCards', SocketService.getGameRoomId());
     });
+
+    $scope.socket.on('playerJoinedRoom', function () {
+        setUpIntervalToSendCards();
+    });
+
+    $scope.socket.on('gotCardsStopSending', function() {
+        clearInterval(sendCardsInterval);
+    });
+
+    function setUpIntervalToSendCards() {
+        sendCardsInterval = setInterval(SendCardsToOtherPlayer, 2000);
+    }
+
+    function SendCardsToOtherPlayer() {
+        $scope.socket.emit('currentCards', SocketService.getGameRoomId(), $scope.currentCards);
+    }
 
     function SetUpDeck() {
         GameService.getCards()
             .then(function(res) {
                 $scope.deck = res.cards;
                 console.log('Cards ready, time to play');
-                if (SocketService.getHostStatus() == true) {
                     $scope.PickNextCards();
-                } else {
-                    GetCardsFromHost();
-                }
             }, function() {
                 console.log('failed to get cards');
             });
-    }
-
-    function GetCardsFromHost() {
-        $scope.socket.emit('getHostCurrentCards');
     }
 
     function FindCard() {
