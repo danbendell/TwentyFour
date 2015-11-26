@@ -2,7 +2,7 @@ angular.module('appRoutes', []).config(['$routeProvider', function($routeProvide
 
     $routeProvider
         .when('/', {
-            templateUrl: 'partials/player.html',
+            templateUrl: 'partials/mainMenu.html',
             controller: 'MainController'
         })
         .when('/nerds', {
@@ -10,6 +10,9 @@ angular.module('appRoutes', []).config(['$routeProvider', function($routeProvide
             controller: 'NerdController'
         })
         .when('/game', {
+            templateUrl: 'partials/game.html',
+            controller: 'GameController'
+        }).when('/:id', {
             templateUrl: 'partials/game.html',
             controller: 'GameController'
         });

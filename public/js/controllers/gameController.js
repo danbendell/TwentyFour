@@ -1,16 +1,13 @@
-angular.module('GameController', []).controller('GameController', ['$scope', 'GameService', function($scope, GameService) {
+angular.module('GameController', []).controller('GameController', ['$scope', 'GameService', 'SocketService', function($scope, GameService, SocketService) {
     const NUMBER_OF_CARDS = 13; //52;
+    $scope.socket = SocketService.getSocket();
+
+    //TODO: SEND DECK AND CURRENTCARDS TO THE OTHER PLAYER IN THE ROOM
+
     $scope.desk = [];
     $scope.currentCards = [];
 
-    GameService.getCards()
-        .then(function(res) {
-            $scope.deck = res.cards;
-            console.log('Cards ready, time to play');
-            $scope.PickNextCards();
-        }, function() {
-            console.log('failed to get cards');
-        });
+    SetUpDeck();
 
     $scope.PickNextCards = function() {
         $scope.currentCards = [];
@@ -21,6 +18,25 @@ angular.module('GameController', []).controller('GameController', ['$scope', 'Ga
             $scope.currentCards.push(FindCard());
         }
     };
+
+    function SetUpDeck() {
+        GameService.getCards()
+            .then(function(res) {
+                $scope.deck = res.cards;
+                console.log('Cards ready, time to play');
+                if (SocketService.getHostStatus() == true) {
+                    $scope.PickNextCards();
+                } else {
+                    GetCardsFromHost();
+                }
+            }, function() {
+                console.log('failed to get cards');
+            });
+    }
+
+    function GetCardsFromHost() {
+        $scope.socket.emit('getHostCurrentCards');
+    }
 
     function FindCard() {
         var position = Math.round(Math.random() * $scope.deck.length) - 1;

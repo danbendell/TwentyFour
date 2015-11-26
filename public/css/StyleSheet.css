@@ -9,11 +9,11 @@
     margin-top: 25px;
 }
 
-#username {
+.textbox {
     width:150px;
 }
 
-#start {
+.start {
     width: 100px;
     height: 40px;
 }
