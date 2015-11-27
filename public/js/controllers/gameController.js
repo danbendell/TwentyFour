@@ -3,8 +3,6 @@ angular.module('GameController', []).controller('GameController', ['$scope', 'Ga
     var sendCardsInterval = 0;
     $scope.socket = SocketService.getSocket();
 
-    //TODO: SEND DECK AND CURRENTCARDS TO THE OTHER PLAYER IN THE ROOM
-
     $scope.desk = [];
     $scope.currentCards = [];
 

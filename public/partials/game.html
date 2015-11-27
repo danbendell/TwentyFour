@@ -3,7 +3,7 @@
         <div class="cell {{card.suit}}">
             <div class="playingCard">
                 <div class="corner">
-                    <span>{{card.value}}</span>
+                    <span>{{card.cardValue}}</span>
                     <img class="suit" src="{{card.suitImageSrc}}">
                 </div>
                 <div ng-repeat="suitPos in card.css">
@@ -12,7 +12,7 @@
                     </div>
                 </div>
                 <div class="right corner">
-                    <span>{{card.value}}</span>
+                    <span>{{card.cardValue}}</span>
                     <img class="suit" src="{{card.suitImageSrc}}">
                 </div>
             </div>
@@ -23,4 +23,5 @@
 <div ng-if="deck.length <= 0">
     <p>There are no more cards</p>
 </div>
+<calculation-directive current-cards=currentCards></calculation-directive>
 <button ng-click="PickNextCards()">Next Cards</button>

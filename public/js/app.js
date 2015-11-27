@@ -4,6 +4,8 @@ angular.module('myApp', [
     'MainController',
     'NerdController',
     'GameController',
+    'CalculationController',
     'GameService',
-    'SocketService'
+    'SocketService',
+    'CalculationDirective'
 ]);
