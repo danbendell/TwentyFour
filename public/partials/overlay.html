@@ -1,0 +1,13 @@
+<div>
+    <div class="overlay"></div>
+    <div class="modal" ng-if="winnerOfRound">
+        <p>24, Correct!!</p>
+        <p>The next round will start in...</p>
+        <p>{{countdown}}</p>
+    </div>
+    <div class="modal" ng-if="!winnerOfRound">
+        <p>Too Slow, the opposition gave the correct answer</p>
+        <p>The next round will start in...</p>
+        <p>{{countdown}}</p>
+    </div>
+</div>

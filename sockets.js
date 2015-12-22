@@ -26,16 +26,29 @@ module.exports = function(io) {
         });
 
         socket.on('currentCards', function(gameId, cards) {
-            socket.broadcast.to(gameId).emit('newCards', cards);
+            io.sockets.in(gameId).emit('newCards', cards);
         });
 
         socket.on('stopSendingCards', function(gameId) {
             io.sockets.in(gameId).emit('gotCardsStopSending');
         });
 
+        socket.on('gameReady', function(gameId) {
+           io.sockets.in(gameId).emit('beginGame');
+        });
+
         socket.on('disconnect', function() {
             RemovePlayer(socket);
         });
+
+        socket.on('equationSolved', function(gameId) {
+            console.log("EquationSolved, send out new cards");
+            console.log(GameData.players);
+            var player = getPlayerDetails(socket);
+            player.score ++;
+            console.log(GameData.players);
+            io.sockets.in(gameId).emit('aPlayerHasAnsweredCorrectly', player);
+        })
     });
 
     function PlayerJoinGame(socket, roomData) {
@@ -76,10 +89,11 @@ module.exports = function(io) {
     }
 
     function CreateNewPlayer(player, socket, isHost, gameRoomId) {
-        //Player.id, Player.name, Player.isHost
+        //Player.id, Player.name, Player.isHost, Player.score
         player.id = socket.id;
         player.isHost = isHost;
         player.gameRoomId = gameRoomId;
+        player.score = 0;
         GameData.players.push(player);
     }
 

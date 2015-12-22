@@ -1,27 +1,74 @@
-<div class="table" >
-    <div ng-repeat="card in currentCards">
-        <div class="cell {{card.suit}}">
-            <div class="playingCard">
-                <div class="corner">
-                    <span>{{card.cardValue}}</span>
-                    <img class="suit" src="{{card.suitImageSrc}}">
+<countdown-directive ng-if="endOfRound" winner-of-round="winnerOfRound"></countdown-directive>
+
+<div id="header">
+    <div class="title">
+        TwentyFour
+    </div>
+    <!--<div class="score header-left">-->
+        <!--Player One - 0-->
+    <!--</div>-->
+    <!--<div class="score header-right">-->
+        <!--Player Two - 0-->
+    <!--</div>-->
+</div>
+<div class="game-center">
+    <div ng-if="waitingForOpposition || settingUpGame">
+        <div class="overlay"></div>
+        <div class="center-container">
+            <div class="absolute-center">
+                <div class="center-message" ng-if="waitingForOpposition">
+                    <p>Waiting for opponent...</p>
                 </div>
-                <div ng-repeat="suitPos in card.css">
-                    <div class="suit-position small-suit {{suitPos.class}}">
-                        <img class="suit" src="{{card.faceImageSrc}}">
-                    </div>
+                <div class="center-message" ng-if="settingUpGame">
+                    <p>Setting up game...</p>
                 </div>
-                <div class="right corner">
-                    <span>{{card.cardValue}}</span>
-                    <img class="suit" src="{{card.suitImageSrc}}">
+                <div class="loader">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    <div ng-if="gameInProgress">
+        <div class="table" >
+            <div ng-repeat="card in currentCards">
+                <div class="cell {{card.suit}}">
+                    <div class="playingCard">
+                        <div class="corner">
+                            <span>{{card.cardValue}}</span>
+                            <img class="suit" src="{{card.suitImageSrc}}">
+                        </div>
+                        <div ng-repeat="suitPos in card.css">
+                            <div class="suit-position small-suit {{suitPos.class}}">
+                                <img class="suit" src="{{card.faceImageSrc}}">
+                            </div>
+                        </div>
+                        <div class="right corner">
+                            <span>{{card.cardValue}}</span>
+                            <img class="suit" src="{{card.suitImageSrc}}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<div ng-if="deck.length <= 0">
-    <p>There are no more cards</p>
+        <div ng-if="deck.length <= 0">
+            <p>There are no more cards</p>
+        </div>
+        <calculation-directive current-cards=currentCards socket=socket></calculation-directive>
+        <button ng-click="PickNextCards()">Next Cards</button>
+    </div>
 </div>
-<calculation-directive current-cards=currentCards></calculation-directive>
-<button ng-click="PickNextCards()">Next Cards</button>

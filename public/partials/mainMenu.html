@@ -1,0 +1,20 @@
+<div class="mainContent" >
+    <h1 id="title" class="mainText">Welcome to TwentyFour</h1>
+    <div class="username">
+        <p class="mainText" id="usernameText">Username</p>
+        <input class="textbox" type="text" ng-model="username">
+    </div>
+
+    <div ng-if="username.length > 0">
+        <p id="inputName" class="mainText">Welcome {{username}}</p>
+        <p>Connected to a game</p>
+        <input class="start" type="button" value="Host Game" ng-click="HostGame()">
+        <div ng-repeat="room in gameRooms">
+            <div ng-if="room.status == 1">
+                <p>{{room.roomId}}</p>
+                <input class="start" type="button" value="Join" ng-click="JoinGame(room)">
+            </div>
+        </div>
+    </div>
+</div>
+

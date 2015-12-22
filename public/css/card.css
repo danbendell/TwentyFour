@@ -1,0 +1,176 @@
+.table {
+    display: -webkit-inline-box;
+}
+
+.cell {
+    padding-right: 15px;
+}
+
+.playingCard {
+    line-height: 1;
+    border-radius: 0.8em;
+    -webkit-border-radius: 0.8em;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    background-color: #FFFFFF;
+    width: 175px;
+    height: 245px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    position: relative;
+}
+
+.corner {
+    position: absolute;
+    text-align: center;
+    font-size: 1.5em;
+    width: 30px;
+    height: 30px;
+    padding-top: 5px;
+}
+
+.right {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+    bottom: 0;
+    right: 0;
+}
+
+.suit {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.diamond {
+    color: #df0000;
+}
+
+.heart {
+    color: #df0000;
+}
+
+
+/*Suit Shared CSS*/
+.suit-position {
+    position: absolute;
+}
+
+.small-suit {
+    width: 25%;
+    height: 26%;
+}
+/*Suit Positions*/
+/*Ace*/
+.center {
+    width: 54%;
+    height: 56%;
+    top: 22.5%;
+    left: 22.5%;
+}
+
+.topRight {
+    top: 6%;
+    right: 18%;
+}
+
+.topLeft {
+    top: 6%;
+    left: 18%;
+}
+
+.bottomLeft {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+    bottom: 6%;
+    left: 18%;
+}
+
+.bottomRight {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+    bottom: 6%;
+    right: 18%;
+}
+
+.centerTopRight {
+    top: 26%;
+    right: 18%;
+}
+
+.centerTopLeft {
+    top: 26%;
+    left: 18%;
+}
+
+.centerBottomRight {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+    bottom: 26%;
+    right: 18%;
+}
+
+.centerBottomLeft {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+    bottom: 26%;
+    left: 18%;
+}
+
+.topCenter {
+    right: 37.5%;
+    top: 17%;
+}
+
+.bottomCenter {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+    right: 37.5%;
+    bottom: 17%;
+}
+
+.centerSmall {
+    right: 37.5%;
+    top: 37%;
+}
+
+.centerRight {
+    top: 37%;
+    right: 18%;
+}
+
+.centerLeft {
+    top: 37%;
+    left: 18%;
+}
+
+.topMiddle {
+    right: 37.5%;
+    top: 6%;
+}
+
+.bottomMiddle {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+    bottom: 6%;
+    right: 37.5%;
+}
+
+.centerTopMiddle {
+    right: 37.5%;
+    top: 22%;
+}
+
+.centerBottomMiddle {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+    right: 37.5%;
+    bottom: 22%;
+}
+
+.picture-card {
+    top: 12%;
+    right: 16%;
+    width: 67%;
+    height: 76%;
+}

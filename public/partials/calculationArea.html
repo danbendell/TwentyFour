@@ -1,0 +1,21 @@
+<div id="calculation-area">
+    <div>
+        <input type="text" ng-model="calculationBox">
+        <input type="button" value="Calculate" ng-click="CalculateEquation()">
+        <input type="button" value="Reset" ng-click="ResetEquation()">
+        <input type="button" value="Pass">
+    </div>
+    <div id="card-options">
+        <div ng-repeat="value in currentValues track by $index">
+            <input type="button" value="{{value.number}}" ng-disabled="numbersDisabled || value.disabled" ng-click="AddValueToCalculation(value.number)">
+        </div>
+    </div>
+    <div>
+        <!--<input type="button" value="(" ng-click="AddValueToCalculation('(')">-->
+        <!--<input type="button" value=")" ng-click="AddValueToCalculation(')')">-->
+        <input type="button" value="+" ng-disabled="operandsDisabled" ng-click="AddValueToCalculation('+')">
+        <input type="button" value="-" ng-disabled="operandsDisabled" ng-click="AddValueToCalculation('-')">
+        <input type="button" value="*" ng-disabled="operandsDisabled" ng-click="AddValueToCalculation('*')">
+        <input type="button" value="/" ng-disabled="operandsDisabled" ng-click="AddValueToCalculation('/')">
+    </div>
+</div>

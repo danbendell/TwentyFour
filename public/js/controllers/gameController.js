@@ -1,6 +1,19 @@
 angular.module('GameController', []).controller('GameController', ['$scope', 'GameService', 'SocketService', function($scope, GameService, SocketService) {
     const NUMBER_OF_CARDS = 13; //52;
     var sendCardsInterval = 0;
+    $scope.countdown = 5;
+    $scope.waitingForOpposition = false;
+    $scope.settingUpGame = false;
+    $scope.gameInProgress = false;
+    $scope.endOfRound = false;
+    $scope.winnerOfRound = false;
+
+    if (SocketService.getHostStatus() == true) {
+        $scope.waitingForOpposition = true;
+    } else {
+        $scope.settingUpGame = true;
+    }
+
     $scope.socket = SocketService.getSocket();
 
     $scope.desk = [];
@@ -9,15 +22,30 @@ angular.module('GameController', []).controller('GameController', ['$scope', 'Ga
     if (SocketService.getHostStatus() == true) SetUpDeck();
 
     $scope.PickNextCards = function() {
+        $scope.endOfRound = false;
         $scope.currentCards = [];
+        console.log($scope.currentCards);
         if(deckIsNotEmpty()){
             $scope.currentCards.push(FindCard());
             $scope.currentCards.push(FindCard());
             $scope.currentCards.push(FindCard());
             $scope.currentCards.push(FindCard());
         }
-        $scope.socket.emit('currentCards', SocketService.getGameRoomId(), $scope.currentCards);
+        console.log('emitting new cards');
+        console.log($scope.currentCards);
+        if($scope.waitingForOpposition == false) {
+            $scope.socket.emit('currentCards', SocketService.getGameRoomId(), $scope.currentCards);
+        }
     };
+
+    $scope.$on("startNextRound", function(event, data) {
+        console.log('Starting next round');
+        if(SocketService.getHostStatus() == true) $scope.PickNextCards();
+        $scope.$apply(function() {
+            $scope.winnerOfRound = false;
+            $scope.endOfRound = false;
+        });
+    });
 
     $scope.socket.on('newCards', function(cards) {
         console.log('NEW CARDS');
@@ -28,11 +56,47 @@ angular.module('GameController', []).controller('GameController', ['$scope', 'Ga
     });
 
     $scope.socket.on('playerJoinedRoom', function () {
+        $scope.waitingForOpposition = false;
+        $scope.settingUpGame = true;
+        console.log('playerJoinedRoom');
         setUpIntervalToSendCards();
     });
 
     $scope.socket.on('gotCardsStopSending', function() {
         clearInterval(sendCardsInterval);
+        if (SocketService.getHostStatus() == true && $scope.gameInProgress == false) {
+            $scope.socket.emit('gameReady', SocketService.getGameRoomId());
+        }
+    });
+
+    $scope.socket.on('aPlayerHasAnsweredCorrectly', function(player) {
+        console.log('END OF ROUND');
+        console.log(player.id);
+        console.log(SocketService.getPlayerId());
+        $scope.$apply(function() {
+            if(player.id == SocketService.getPlayerId()) {
+                console.log('WINNER OF ROUND');
+                $scope.winnerOfRound = true;
+            }
+            $scope.endOfRound = true;
+        });
+        $scope.$broadcast("startCountdown", {});
+    });
+
+    $scope.socket.on('newCardsFromHost', function() {
+        console.log('Getting new cards');
+       if(SocketService.getHostStatus()) {
+           $scope.PickNextCards();
+       }
+    });
+
+    $scope.socket.on('beginGame', function() {
+        console.log('BeginGame');
+        $scope.$apply(function() {
+            $scope.waitingForOpposition = false;
+            $scope.settingUpGame = false;
+            $scope.gameInProgress = true;
+        });
     });
 
     function setUpIntervalToSendCards() {

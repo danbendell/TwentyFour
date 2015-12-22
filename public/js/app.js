@@ -5,7 +5,9 @@ angular.module('myApp', [
     'NerdController',
     'GameController',
     'CalculationController',
+    'CountdownController',
     'GameService',
     'SocketService',
-    'CalculationDirective'
+    'CalculationDirective',
+    'CountdownDirective'
 ]);
