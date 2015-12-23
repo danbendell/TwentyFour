@@ -1,4 +1,10 @@
 .table {
+    margin: auto;
+    width: 39%;
+    padding: 10px;
+}
+
+.card {
     display: -webkit-inline-box;
 }
 

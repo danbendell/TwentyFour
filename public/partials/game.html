@@ -44,21 +44,23 @@
     </div>
     <div ng-if="gameInProgress">
         <div class="table" >
-            <div ng-repeat="card in currentCards">
-                <div class="cell {{card.suit}}">
-                    <div class="playingCard">
-                        <div class="corner">
-                            <span>{{card.cardValue}}</span>
-                            <img class="suit" src="{{card.suitImageSrc}}">
-                        </div>
-                        <div ng-repeat="suitPos in card.css">
-                            <div class="suit-position small-suit {{suitPos.class}}">
-                                <img class="suit" src="{{card.faceImageSrc}}">
+            <div class="card">
+                <div ng-repeat="card in currentCards">
+                    <div class="cell {{card.suit}}">
+                        <div class="playingCard">
+                            <div class="corner">
+                                <span>{{card.cardValue}}</span>
+                                <img class="suit" src="{{card.suitImageSrc}}">
                             </div>
-                        </div>
-                        <div class="right corner">
-                            <span>{{card.cardValue}}</span>
-                            <img class="suit" src="{{card.suitImageSrc}}">
+                            <div ng-repeat="suitPos in card.css">
+                                <div class="suit-position small-suit {{suitPos.class}}">
+                                    <img class="suit" src="{{card.faceImageSrc}}">
+                                </div>
+                            </div>
+                            <div class="right corner">
+                                <span>{{card.cardValue}}</span>
+                                <img class="suit" src="{{card.suitImageSrc}}">
+                            </div>
                         </div>
                     </div>
                 </div>
