@@ -8,6 +8,7 @@
 }
 
 #calculation-area {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     margin: auto;
     width: 39%;
     padding: 10px;
@@ -48,7 +49,7 @@
     box-shadow: 0 4px 0 #c4402f, 0 5px 5px 1px rgba(0, 0, 0, 0.4);
 }
 .calc-button:active {
-    margin-top: -18px;
+    /*margin-top: -10px;*/
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
