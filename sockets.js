@@ -25,8 +25,8 @@ module.exports = function(io) {
             GetOpenGameRooms(socket);
         });
 
-        socket.on('currentCards', function(gameId, cards, deck) {
-            io.sockets.in(gameId).emit('newCards', cards, deck);
+        socket.on('currentCards', function(gameId, cards, deck, solution) {
+            io.sockets.in(gameId).emit('newCards', cards, deck, solution);
         });
 
         socket.on('stopSendingCards', function(gameId) {

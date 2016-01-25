@@ -10,6 +10,17 @@ angular.module('GameService', []).factory('GameService', ['$http', '$q', functio
                     def.reject("Failed to get cards");
                 });
             return def.promise;
+        },
+        getCombinations: function() {
+            var def = $q.defer();
+            $http.get('http://localhost:8080/api/combinations')
+                .success(function(res) {
+                    def.resolve(res)
+                })
+                .error(function() {
+                    def.reject("Failed to get combinations");
+                });
+            return def.promise;
         }
     }
 }]);

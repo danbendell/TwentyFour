@@ -1,7 +1,9 @@
 angular.module('GameController', []).controller('GameController', ['$scope', '$rootScope', 'GameService', 'SocketService', function($scope, $rootScope, GameService, SocketService) {
     const NUMBER_OF_CARDS = 52;
+    const POSSIBLE = 'possible';
+    const IMPOSSIBLE = 'impossible';
     var sendCardsInterval = 0;
-    $scope.countdown = 5;
+    $scope.countdown = 10;
     $scope.waitingForOpposition = false;
     $scope.settingUpGame = false;
     $scope.gameInProgress = false;
@@ -19,24 +21,44 @@ angular.module('GameController', []).controller('GameController', ['$scope', '$r
 
     $scope.socket = SocketService.getSocket();
     $scope.deck = [];
+    $scope.tempDeck = [];
+    $scope.combinations = [];
+    $scope.solution = [];
     $scope.currentCards = [];
 
-    if (SocketService.getHostStatus() == true) SetUpDeck();
+    if (SocketService.getHostStatus() == true) {
+        SetUpDeck();
+        getCombinations();
+    }
 
     $scope.PickNextCards = function() {
         $scope.endOfRound = false;
         $scope.currentCards = [];
+        $scope.tempDeck = $scope.deck.slice(0);
         if(deckIsNotEmpty()){
             $scope.currentCards.push(FindCard());
             $scope.currentCards.push(FindCard());
             $scope.currentCards.push(FindCard());
             $scope.currentCards.push(FindCard());
         }
-        console.log('emitting new cards');
-        console.log($scope.currentCards);
-        if($scope.waitingForOpposition == false) {
-            SendCardsToOtherPlayer();
+
+        if(combinationIsPossible()) {
+            console.log("All good");
+            console.log('emitting new cards');
+            console.log($scope.currentCards);
+            if($scope.waitingForOpposition == false) {
+                SendCardsToOtherPlayer();
+            }
+        } else {
+            console.log("Bad combo");
+            $scope.deck = $scope.tempDeck.slice(0);
+            if($scope.deck.length <= 4) {
+                console.log("Can't complete the last hand!!!");
+            } else {
+                $scope.PickNextCards();
+            }
         }
+
     };
 
     $scope.$on("startNextRound", function(event, data) {
@@ -50,10 +72,11 @@ angular.module('GameController', []).controller('GameController', ['$scope', '$r
         });
     });
 
-    $scope.socket.on('newCards', function(cards, deck) {
+    $scope.socket.on('newCards', function(cards, deck, solution) {
         $scope.$apply(function () {
             $scope.currentCards = cards;
             $scope.deck = deck;
+            $scope.solution = solution;
         });
         $scope.socket.emit('stopSendingCards', SocketService.getGameRoomId());
     });
@@ -139,6 +162,31 @@ angular.module('GameController', []).controller('GameController', ['$scope', '$r
         }
     });
 
+    function combinationIsPossible() {
+        var possible = false;
+        var comparisonArray = $scope.currentCards.slice(0);
+        comparisonArray = comparisonArray.sort(function(a, b) {
+            return a.numericValue - b.numericValue;
+        });
+        for(var i = 0; i < $scope.combinations.length; i++) {
+            if(comparisonArray[0].numericValue == $scope.combinations[i].valueOne &&
+                comparisonArray[1].numericValue == $scope.combinations[i].valueTwo &&
+                comparisonArray[2].numericValue == $scope.combinations[i].valueThree &&
+                comparisonArray[3].numericValue == $scope.combinations[i].valueFour) {
+                    if($scope.combinations[i].solution == POSSIBLE) {
+                        possible = true;
+                        console.log($scope.combinations[i].answer);
+                        $scope.solution = $scope.combinations[i].answer;
+                        return possible;
+                    } else {
+                        return possible;
+                    }
+            }
+        }
+        return possible;
+    }
+
+
     function rubberBandAnimation(elementName) {
         $(elementName).addClass('animated rubberBand').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
             $(elementName).removeClass('animated rubberBand');
@@ -163,7 +211,7 @@ angular.module('GameController', []).controller('GameController', ['$scope', '$r
     }
 
     function SendCardsToOtherPlayer() {
-        $scope.socket.emit('currentCards', SocketService.getGameRoomId(), $scope.currentCards, $scope.deck);
+        $scope.socket.emit('currentCards', SocketService.getGameRoomId(), $scope.currentCards, $scope.deck, $scope.solution);
     }
 
     function SetUpDeck() {
@@ -171,9 +219,19 @@ angular.module('GameController', []).controller('GameController', ['$scope', '$r
             .then(function(res) {
                 $scope.deck = res.cards;
                 console.log('Cards ready, time to play');
-                    $scope.PickNex2tCards();
             }, function() {
                 console.log('failed to get cards');
+            });
+    }
+
+    function getCombinations() {
+        GameService.getCombinations()
+            .then(function(res) {
+                $scope.combinations = res.combinations;
+                console.log('Got Combination Array');
+                $scope.PickNextCards();
+            }, function() {
+                console.log('failed to get combinations');
             });
     }
 

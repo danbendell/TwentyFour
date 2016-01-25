@@ -4,15 +4,24 @@
         <div class="absolute-center">
             <div class="center-large-text center-message" ng-if="winnerOfRound">
                 <p>24, Correct!!</p>
-                <p>{{countdown}}</p>
+                <div class="loader1"></div>
             </div>
             <div class="center-large-text center-message" ng-if="!winnerOfRound && !waitingForOpposition && !settingUpGame && !roundSkipped">
                 <p>Too Slow, the opposition gave the correct answer</p>
-                <p>{{countdown}}</p>
+                <div class="loader1"></div>
             </div>
-            <div class="center-message center-large-text" ng-if="roundSkipped">
-                <p>Round Passed</p>
-                <p>{{countdown}}</p>
+            <div class="center-message center-small-text" ng-if="roundSkipped">
+                Round Passed <br>
+                <br>
+                <p ng-if="!solutionVisable" ng-click="showSolution()">View Solution</p>
+                <div ng-if="solutionVisable">
+                    Step 1 : {{solution[0].stepOne}} <br>
+                    Step 2 : {{solution[0].stepTwo}} <br>
+                    Step 3 : {{solution[0].stepThree}} <br>
+                </div>
+                <br>
+                <!--<div class="loader3"></div>-->
+                <div class="loader1"></div>
             </div>
             <div class="center-message center-large-text" ng-if="waitingForOpposition">
                 <p>Waiting for opponent...</p>

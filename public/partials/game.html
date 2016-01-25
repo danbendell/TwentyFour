@@ -11,7 +11,7 @@
 </div>
 <div class="game-center">
     <overlay-directive ng-if="endOfRound || waitingForOpposition || settingUpGame || roundSkipped" winner-of-round="winnerOfRound"
-                       waiting-for-opposition="waitingForOpposition" setting-up-game="settingUpGame" round-skipped="roundSkipped"></overlay-directive>
+                       waiting-for-opposition="waitingForOpposition" setting-up-game="settingUpGame" round-skipped="roundSkipped" solution="solution"></overlay-directive>
 
     <div ng-if="gameInProgress && !endOfRound">
         <div class="title-message center-large-text" ng-if="deck.length <= 0">
