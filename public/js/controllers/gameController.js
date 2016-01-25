@@ -54,6 +54,8 @@ angular.module('GameController', []).controller('GameController', ['$scope', '$r
             console.log($scope.currentCards);
             if($scope.waitingForOpposition == false) {
                 SendCardsToOtherPlayer();
+            } else {
+                console.log("WAIT SCREEN IS UP");
             }
         } else {
             console.log("Bad combo");
@@ -80,18 +82,27 @@ angular.module('GameController', []).controller('GameController', ['$scope', '$r
     });
 
     $scope.socket.on('newCards', function(cards, deck, solution) {
-        $scope.$apply(function () {
-            $scope.currentCards = cards;
-            $scope.deck = deck;
-            $scope.solution = solution;
-        });
-        $scope.socket.emit('stopSendingCards', SocketService.getGameRoomId());
+        if(cards != [] && deck != []) {
+            $scope.$apply(function () {
+                $scope.currentCards = cards;
+                $scope.deck = deck;
+                $scope.solution = solution;
+            });
+            $scope.socket.emit('stopSendingCards', SocketService.getGameRoomId());
+        }
     });
 
     $scope.socket.on('playerJoinedRoom', function () {
+        console.log("PLAYER JOINED");
         $scope.waitingForOpposition = false;
         $scope.settingUpGame = true;
-        setUpIntervalToSendCards();
+        if(SocketService.getHostStatus()) {
+            if($scope.deck.length != 0 && $scope.currentCards.length != 0) {
+                setUpIntervalToSendCards();
+            } else {
+                SetUpDeck();
+            }
+        }
     });
 
     $scope.socket.on('gotCardsStopSending', function() {
@@ -246,6 +257,7 @@ angular.module('GameController', []).controller('GameController', ['$scope', '$r
     }
 
     function SendCardsToOtherPlayer() {
+        console.log("SENDING CARDS");
         $scope.socket.emit('currentCards', SocketService.getGameRoomId(), $scope.currentCards, $scope.deck, $scope.solution);
     }
 
