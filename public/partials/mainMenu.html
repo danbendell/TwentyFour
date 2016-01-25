@@ -4,7 +4,8 @@
         <p class="mainText" id="usernameText">Username</p>
         <input class="textbox" type="text" ng-model="username">
     </div>
-
+    <input type="file" name="file" id="file">
+    <input type="button" value="createTXT" ng-click="CreateSolutionList()">
     <div ng-if="username.length > 0">
         <p id="inputName" class="mainText">Welcome {{username}}</p>
         <p>Connected to a game</p>

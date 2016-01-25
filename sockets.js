@@ -25,8 +25,8 @@ module.exports = function(io) {
             GetOpenGameRooms(socket);
         });
 
-        socket.on('currentCards', function(gameId, cards) {
-            io.sockets.in(gameId).emit('newCards', cards);
+        socket.on('currentCards', function(gameId, cards, deck) {
+            io.sockets.in(gameId).emit('newCards', cards, deck);
         });
 
         socket.on('stopSendingCards', function(gameId) {
@@ -34,7 +34,20 @@ module.exports = function(io) {
         });
 
         socket.on('gameReady', function(gameId) {
-           io.sockets.in(gameId).emit('beginGame');
+            var gameDetails = getGameDetails(gameId);
+           io.sockets.in(gameId).emit('beginGame', gameDetails);
+        });
+
+        socket.on('pass', function(gameId) {
+            var player = getPlayerDetails(socket);
+            var gameDetails = getGameDetails(gameId);
+            player.passed = true;
+            io.sockets.in(gameId).emit('playerPassed', player, gameDetails);
+        });
+
+        socket.on('roundSkipped', function(gameId) {
+            var gameDetails = resetForNextRound(gameId);
+            io.sockets.in(gameId).emit("newPlayerDetails", gameDetails);
         });
 
         socket.on('disconnect', function() {
@@ -43,11 +56,11 @@ module.exports = function(io) {
 
         socket.on('equationSolved', function(gameId) {
             console.log("EquationSolved, send out new cards");
-            console.log(GameData.players);
+            var gameDetails = getGameDetails(gameId);
             var player = getPlayerDetails(socket);
             player.score ++;
             console.log(GameData.players);
-            io.sockets.in(gameId).emit('aPlayerHasAnsweredCorrectly', player);
+            io.sockets.in(gameId).emit('aPlayerHasAnsweredCorrectly', player, gameDetails);
         })
     });
 
@@ -56,6 +69,7 @@ module.exports = function(io) {
         // Join the room
         socket.join(roomData.roomId);
 
+        console.log("Client joining - " + roomData.roomId);
         setGameRoomToFull(roomData);
 
         //console.log('Sending game rooms');
@@ -85,6 +99,7 @@ module.exports = function(io) {
             mySocketId: socket.id
         };
         socket.emit('newGameCreated', gameInfo, getPlayerDetails(socket));
+        console.log("Host joining - " + thisGameId.toString());
         socket.join(thisGameId.toString());
     }
 
@@ -94,7 +109,25 @@ module.exports = function(io) {
         player.isHost = isHost;
         player.gameRoomId = gameRoomId;
         player.score = 0;
+        player.passed = false;
         GameData.players.push(player);
+    }
+
+    function resetPassedValues(gameId) {
+        var gameDetails = [];
+        for (var i = 0; i < GameData.players.length; i++) {
+            if (GameData.players[i].gameRoomId == gameId) {
+                GameData.players[i].passed = false;
+                gameDetails.push(GameData.players[i]);
+            }
+        }
+        return gameDetails;
+    }
+
+    function resetForNextRound(gameId) {
+        var gameDetails = getGameDetails(gameId);
+        gameDetails = resetPassedValues(gameId);
+        return gameDetails;
     }
 
     function getPlayerDetails(socket) {
@@ -112,6 +145,16 @@ module.exports = function(io) {
                 break;
             }
         }
+    }
+
+    function getGameDetails(gameId) {
+        var gameDetails = [];
+        for (var i = 0; i < GameData.players.length; i++) {
+            if (GameData.players[i].gameRoomId == gameId) {
+                gameDetails.push(GameData.players[i]);
+            }
+        }
+        return gameDetails;
     }
 
     function GetOpenGameRooms(socket) {

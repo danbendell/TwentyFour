@@ -1,13 +1,43 @@
 <div>
     <div class="overlay"></div>
-    <div class="modal" ng-if="winnerOfRound">
-        <p>24, Correct!!</p>
-        <p>The next round will start in...</p>
-        <p>{{countdown}}</p>
-    </div>
-    <div class="modal" ng-if="!winnerOfRound">
-        <p>Too Slow, the opposition gave the correct answer</p>
-        <p>The next round will start in...</p>
-        <p>{{countdown}}</p>
+    <div class="center-container">
+        <div class="absolute-center">
+            <div class="center-large-text center-message" ng-if="winnerOfRound">
+                <p>24, Correct!!</p>
+                <p>{{countdown}}</p>
+            </div>
+            <div class="center-large-text center-message" ng-if="!winnerOfRound && !waitingForOpposition && !settingUpGame && !roundSkipped">
+                <p>Too Slow, the opposition gave the correct answer</p>
+                <p>{{countdown}}</p>
+            </div>
+            <div class="center-message center-large-text" ng-if="roundSkipped">
+                <p>Round Passed</p>
+                <p>{{countdown}}</p>
+            </div>
+            <div class="center-message center-large-text" ng-if="waitingForOpposition">
+                <p>Waiting for opponent...</p>
+            </div>
+            <div class="center-message center-large-text" ng-if="settingUpGame">
+                <p>Setting up game...</p>
+            </div>
+            <div ng-if="waitingForOpposition || settingUpGame" class="loader">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+        </div>
     </div>
 </div>

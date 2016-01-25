@@ -1,48 +1,22 @@
-<countdown-directive ng-if="endOfRound" winner-of-round="winnerOfRound"></countdown-directive>
-
 <div id="header">
+    <div name="hostDetails" class="score header-left">
+        {{hostName}}  {{hostScore}}
+    </div>
     <div class="title">
         TwentyFour
     </div>
-    <!--<div class="score header-left">-->
-        <!--Player One - 0-->
-    <!--</div>-->
-    <!--<div class="score header-right">-->
-        <!--Player Two - 0-->
-    <!--</div>-->
+    <div name="playerDetails" class="score header-right">
+        {{playerName}}  {{playerScore}}
+    </div>
 </div>
 <div class="game-center">
-    <div ng-if="waitingForOpposition || settingUpGame">
-        <div class="overlay"></div>
-        <div class="center-container">
-            <div class="absolute-center">
-                <div class="center-message" ng-if="waitingForOpposition">
-                    <p>Waiting for opponent...</p>
-                </div>
-                <div class="center-message" ng-if="settingUpGame">
-                    <p>Setting up game...</p>
-                </div>
-                <div class="loader">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </div>
+    <overlay-directive ng-if="endOfRound || waitingForOpposition || settingUpGame || roundSkipped" winner-of-round="winnerOfRound"
+                       waiting-for-opposition="waitingForOpposition" setting-up-game="settingUpGame" round-skipped="roundSkipped"></overlay-directive>
+
+    <div ng-if="gameInProgress && !endOfRound">
+        <div class="title-message center-large-text" ng-if="deck.length <= 0">
+            Last Round!
         </div>
-    </div>
-    <div ng-if="gameInProgress">
         <div class="table" >
             <div class="card">
                 <div ng-repeat="card in currentCards">
@@ -65,10 +39,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div ng-if="deck.length <= 0">
-            <p>There are no more cards</p>
         </div>
         <calculation-directive current-cards=currentCards socket=socket></calculation-directive>
         <button ng-click="PickNextCards()">Next Cards</button>

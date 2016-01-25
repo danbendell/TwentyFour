@@ -1,21 +1,31 @@
 angular.module('CalculationController', []).controller('CalculationController', ['$scope', 'SocketService', function($scope, SocketService) {
     $scope.numbersDisabled = false;
     $scope.operandsDisabled = true;
+    $scope.calculationDisabled = true;
+    $scope.undoDisabled = true;
+    $scope.passDisabled = false;
+
     $scope.calculationBox = '';
     $scope.calcBoxData = [];
     $scope.currentValues = [];
     $scope.oldCards = [];
+
+    $scope.previousState = [];
+
+
 
     var interval = setInterval(function() {
         if($scope.currentCards != $scope.oldCards) {
             $scope.oldCards = $scope.currentCards;
             $scope.$apply(function() {
                 $scope.currentValues = FillButtonValues();
+                $scope.previousState = FillButtonValues();
             });
         }
     }, 150);
 
     $scope.AddValueToCalculation = function(value) {
+        $scope.undoDisabled = false;
         if(isOperand(value)) EnableNumbers();
         else EnableOperands(value);
         $scope.calcBoxData.push(value);
@@ -41,14 +51,38 @@ angular.module('CalculationController', []).controller('CalculationController', 
         if($scope.currentValues.length == 1) DisableNumbersAndOperands();
         $scope.calcBoxData = [];
         $scope.calculationBox = "";
+        $scope.previousState = $scope.currentValues.slice(0);
+        $scope.undoDisabled = true;
         EnableNumbers();
     };
 
     $scope.ResetEquation = function() {
         $scope.currentValues = FillButtonValues();
+        $scope.previousState = FillButtonValues();
+
         $scope.calcBoxData = [];
         $scope.calculationBox = "";
         EnableNumbers();
+        $scope.undoDisabled = true;
+    };
+
+    $scope.UndoAction = function() {
+        $scope.currentValues.forEach(function(value) {
+            value.disabled = false;
+        });
+
+        EnableNumbers();
+        $scope.calcBoxData = [];
+        $scope.calculationBox = "";
+    };
+
+    $scope.$on("startNextRound", function(event, data) {
+        $scope.passDisabled = false;
+    });
+
+    $scope.Pass = function() {
+        $scope.passDisabled = true;
+        $scope.socket.emit('pass', SocketService.getGameRoomId());
     };
 
     function isOperand(value) {
@@ -59,19 +93,21 @@ angular.module('CalculationController', []).controller('CalculationController', 
     function DisableNumbersAndOperands() {
         $scope.numbersDisabled = true;
         $scope.operandsDisabled = true;
+        $scope.calculationDisabled = false;
     }
 
     function EnableNumbers() {
         $scope.numbersDisabled = false;
         $scope.operandsDisabled = true;
+        $scope.calculationDisabled = true;
     }
 
     function EnableOperands(value) {
         var disablePosition = PositionMatchingValue(value);
-
         $scope.currentValues[disablePosition].disabled = true;
         $scope.operandsDisabled = false;
         $scope.numbersDisabled = true;
+        $scope.calculationDisabled = true;
     }
 
     function PositionMatchingValue(value) {

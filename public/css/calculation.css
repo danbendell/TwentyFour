@@ -1,21 +1,35 @@
-#card-options {
+.card-options {
     display: flex;
+}
+
+.calc-left-items {
     margin-bottom: 10px;
+    width: 100%;
 }
 
 .extra-space {
     margin-right: 4px;
 }
 
+.calc-left-size {
+    width: 74%;
+    padding-left: 50px;
+}
+
+.calc-right-side {
+    display: table-caption;
+}
+
+.calc-right-items  {
+    margin-bottom: 10px;
+}
+
 #calculation-area {
+    display: -webkit-box;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     margin: auto;
     width: 39%;
     padding: 10px;
-}
-
-.top-row {
-    margin-bottom: 10px;
 }
 
 .calc-button {
@@ -41,7 +55,26 @@
     -webkit-transition: all 0.15s ease-in-out;
     transition: all 0.15s ease-in-out;
 }
-.calc-button:hover {
+
+.calc-button[disabled] {
+    background-color: #C6C6C6;
+
+    text-shadow: 0 -1px -1px rgba(127, 140, 141, 0.66);
+    -moz-box-shadow: 0 4px 0 #7f8c8d, 0 5px 5px 1px rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: 0 4px 0 #7f8c8d, 0 5px 5px 1px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 0 #7f8c8d, 0 5px 5px 1px rgba(0, 0, 0, 0.4);
+}
+
+.calc-button:hover:disabled {
+    background-color: #C6C6C6;
+
+    text-shadow: 0 -1px -1px rgba(127, 140, 141, 0.66);
+    -moz-box-shadow: 0 4px 0 #7f8c8d, 0 5px 5px 1px rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: 0 4px 0 #7f8c8d, 0 5px 5px 1px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 0 #7f8c8d, 0 5px 5px 1px rgba(0, 0, 0, 0.4);
+}
+
+.calc-button:hover:enabled {
     background-color: #d25544;
     text-shadow: 0 -1px -1px #c4402f;
     -moz-box-shadow: 0 4px 0 #c4402f, 0 5px 5px 1px rgba(0, 0, 0, 0.4);
@@ -56,10 +89,24 @@
 }
 
 .calc-box {
+    text-align: center;
+    width: 60%;
     -webkit-box-shadow: 0 4px 0 #af3a2a, 0 5px 5px 1px rgba(0, 0, 0, 0.4);
     box-shadow: 0 4px 0 #af3a2a, 0 5px 5px 1px rgba(0, 0, 0, 0.4);
-    font-size: 17px;
+    font-size: 22px;
     border-radius: 4px;
     padding: 10px;
     border: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.calc-box input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
 }

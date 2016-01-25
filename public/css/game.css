@@ -8,17 +8,12 @@
     z-index: 10;
 }
 
-.modal {
-    width: 300px;
-    height: 200px;
-    top: 50%;
-    left: 50%;
-    margin-top: -100px;
-    margin-left: -150px;
-    background-color: #f1c40f;
-    border-radius: 5px;
-    text-align: center;
-    z-index: 11;
+.center-small-text {
+    font-size: 1.4em;
+}
+
+.center-large-text {
+    font-size: 2em;
 }
 
 .game-center {
@@ -38,7 +33,7 @@
     border: solid #CC4331 thick;
     border-radius: 20px;
     width: 25%;
-    height: 50%;
+    height: 60%;
     overflow: auto;
     margin: auto;
     position: absolute;
@@ -49,8 +44,18 @@
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: bold;
     text-align: center;
-    margin-top: 15px;
-    font-size: 2em;
+    padding-top: 6px;
+}
+
+.title-message {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #AF3A2A;
+    color: #FFFFFF;
+
 }
 
 
@@ -76,12 +81,14 @@
 }
 
 .header-left {
+    margin-top: 11px;
     height: 100%;
     float: left;
 
 }
 
 .header-right {
+    margin-top: 11px;
     height: 100%;
     float: right;
 }
