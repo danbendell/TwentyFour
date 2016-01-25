@@ -8,7 +8,8 @@ angular.module('OverlayDirective', []).directive('overlayDirective', function ()
             roundSkipped: '=',
             solution: '=',
             endOfGame: '=',
-            playerDetails: '='
+            playerDetails: '=',
+            playerQuit: '='
         },
         templateUrl: 'partials/overlay.html',
         replace: true,

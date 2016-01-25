@@ -10,9 +10,9 @@
     </div>
 </div>
 <div class="game-center">
-    <overlay-directive ng-if="endOfRound || waitingForOpposition || settingUpGame || roundSkipped || endOfGame" winner-of-round="winnerOfRound"
+    <overlay-directive ng-if="endOfRound || waitingForOpposition || settingUpGame || roundSkipped || endOfGame || playerQuit" winner-of-round="winnerOfRound"
                        waiting-for-opposition="waitingForOpposition" setting-up-game="settingUpGame" round-skipped="roundSkipped" solution="solution"
-                       end-of-game="endOfGame" player-details="playerDetails"></overlay-directive>
+                       end-of-game="endOfGame" player-details="playerDetails" player-quit="playerQuit"></overlay-directive>
 
     <div ng-if="gameInProgress && !endOfRound">
         <div class="title-message center-large-text" ng-if="deck.length <= 0">

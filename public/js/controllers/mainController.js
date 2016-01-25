@@ -14,7 +14,6 @@ angular.module('MainController', []).controller('MainController', ['$scope', '$l
 
     $scope.socket.on('gameRoomList', function(GameRooms) {
         $scope.$apply(function () {
-            console.log(GameRooms);
             $scope.gameRooms = GameRooms;
             for(var i = 0; i < $scope.gameRooms.length; i++) {
                 if($scope.gameRooms[i].status == 1) {

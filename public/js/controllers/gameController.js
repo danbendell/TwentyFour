@@ -11,6 +11,7 @@ angular.module('GameController', []).controller('GameController', ['$scope', '$r
     $scope.endOfGame = false;
     $scope.winnerOfRound = false;
     $scope.roundSkipped = false;
+    $scope.playerQuit = false;
 
     $scope.playerDetails;
 
@@ -182,6 +183,13 @@ angular.module('GameController', []).controller('GameController', ['$scope', '$r
         $scope.$apply(function() {
             $scope.endOfRound = true;
             $scope.endOfGame = true;
+        });
+    });
+
+    $scope.socket.on("playerLeftTheGame", function() {
+        $scope.$apply(function() {
+            $scope.endOfRound = true;
+            $scope.playerQuit = true;
         });
     });
 

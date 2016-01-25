@@ -62,6 +62,11 @@ module.exports = function(io) {
         });
 
         socket.on('disconnect', function() {
+            console.log("disconnect");
+            var player = getPlayerDetails(socket);
+            if(player != undefined){
+                io.sockets.in(player.gameRoomId).emit("playerLeftTheGame");
+            }
             RemovePlayer(socket);
         });
 
@@ -116,19 +121,33 @@ module.exports = function(io) {
 
     function CreateNewPlayer(player, socket, isHost, gameRoomId) {
         //Player.id, Player.name, Player.isHost, Player.score
-        player.id = socket.id;
-        player.isHost = isHost;
-        player.gameRoomId = gameRoomId;
-        player.score = 0;
-        player.passed = false;
-        GameData.players.push(player);
+        console.log("Creating PLayer");
+        console.log(player);
+        if(getPlayerDetails(socket) == '') {
+            player.id = socket.id;
+            player.isHost = isHost;
+            player.gameRoomId = gameRoomId;
+            player.score = 0;
+            player.passed = false;
+            GameData.players.push(player);
+        } else {
+            for (var i = 0; i < GameData.players.length; i++) {
+                if (GameData.players[i].id == socket.id) {
+                    GameData.players[i].isHost = isHost;
+                    GameData.players[i].name = player.name;
+                    GameData.players[i].gameRoomId = gameRoomId;
+                    GameData.players[i].score = 0;
+                    GameData.players[i].passed = false;
+                }
+            }
+        }
     }
 
     function resetPlayer(playerId) {
         for (var i = 0; i < GameData.players.length; i++) {
             if (GameData.players[i].id == playerId) {
                 GameData.players[i].isHost = false;
-                GameData.players[i].roomId = "";
+                GameData.players[i].gameRoomId = "";
                 GameData.players[i].score = 0;
                 GameData.players[i].passed = false;
             }
@@ -158,6 +177,7 @@ module.exports = function(io) {
                 return GameData.players[i];
             }
         }
+        return '';
     }
 
     function RemovePlayer(socket) {

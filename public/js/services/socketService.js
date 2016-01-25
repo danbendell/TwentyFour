@@ -8,8 +8,7 @@ angular.module('SocketService', []).factory('SocketService', ['$rootScope', '$lo
     socket.on('connected', function(data) {
         console.log(data.id);
         playerId = data.id;
-        clearInterval(intervalTime);
-        intervalTime = setInterval(SearchForOpenGameRooms, 5000);
+        SearchForGames();
     });
 
     socket.on('newGameCreated', function (config, player) {
@@ -32,8 +31,14 @@ angular.module('SocketService', []).factory('SocketService', ['$rootScope', '$lo
         });
     }
 
+    function SearchForGames() {
+        clearInterval(intervalTime);
+        intervalTime = setInterval(SearchForOpenGameRooms, 5000);
+    }
+
     function MoveToMenuScreen() {
         $location.path("/");
+        SearchForGames();
     }
 
     function SearchForOpenGameRooms() {

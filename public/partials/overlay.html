@@ -10,11 +10,18 @@
                 <br><br>
                 <input class="calc-button" type="button" value="Main Menu" ng-click="returnToMainMenu()">
             </div>
+            <div class="center-large-text center-message" ng-if="playerQuit">
+                Sorry!
+                <br>
+                The Opposition Disconnected
+                <br><br>
+                <input class="calc-button" type="button" value="Main Menu" ng-click="returnToMainMenu()">
+            </div>
             <div class="center-large-text center-message" ng-if="winnerOfRound">
                 <p>24, Correct!!</p>
                 <div class="loader1"></div>
             </div>
-            <div class="center-large-text center-message" ng-if="!winnerOfRound && !waitingForOpposition && !settingUpGame && !roundSkipped && !endOfGame">
+            <div class="center-large-text center-message" ng-if="!winnerOfRound && !waitingForOpposition && !settingUpGame && !roundSkipped && !endOfGame && !playerQuit">
                 <p>Too Slow, the opposition gave the correct answer</p>
                 <div class="loader1"></div>
             </div>
