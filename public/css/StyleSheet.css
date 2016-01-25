@@ -3,9 +3,17 @@ body {
 }
 
 .mainContent {
+    padding-top: 3%;
     width: 75%;
     margin-left: 12.5%;
     text-align: center;
+}
+
+.host-join-buttons {
+        display: -webkit-inline-box;
+}
+.host-button {
+    margin-right: 30px;
 }
 
 #title {
@@ -29,10 +37,13 @@ body {
 
 .mainText {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #CC4431;
+    font-weight: bold;
+    font-size: 1.6em;
     margin-bottom: 0px;
     margin-top: 0px;
 }
 
 #usernameText {
-    padding-right: 15px;
+    padding-top: 11px;
 }

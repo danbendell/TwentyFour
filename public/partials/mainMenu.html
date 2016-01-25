@@ -1,21 +1,29 @@
-<div class="mainContent" >
-    <h1 id="title" class="mainText">Welcome to TwentyFour</h1>
-    <div class="username">
-        <p class="mainText" id="usernameText">Username</p>
-        <input class="textbox" type="text" ng-model="username">
+<div>
+    <div id="header">
+
+        <div class="title">
+            Twenty Four
+        </div>
+
     </div>
-    <input type="file" name="file" id="file">
-    <input type="button" value="createTXT" ng-click="CreateSolutionList()">
-    <div ng-if="username.length > 0">
-        <p id="inputName" class="mainText">Welcome {{username}}</p>
-        <p>Connected to a game</p>
-        <input class="start" type="button" value="Host Game" ng-click="HostGame()">
-        <div ng-repeat="room in gameRooms">
-            <div ng-if="room.status == 1">
-                <p>{{room.roomId}}</p>
-                <input class="start" type="button" value="Join" ng-click="JoinGame(room)">
+    <div class="mainContent">
+        <div class="username">
+            <p class="mainText" id="usernameText">Username</p>
+            <input class="calc-box" name="calcBox" type="text" ng-model="username" ng-change="">
+        </div>
+        <div ng-if="username.length > 0">
+            <div class="host-join-buttons">
+                <input class="calc-button host-button" type="button" value="Host Game" ng-click="HostGame()">
+                <div ng-if="openGameRooms.length > 0">
+                    <input class="calc-button" type="button" value="Join" ng-click="JoinGame()">
+                </div>
+                <div ng-if="openGameRooms.length == 0">
+                    <input class="calc-button" type="button" value="Searching For Games" ng-disabled="true" readonly>
+                </div>
             </div>
+
         </div>
     </div>
 </div>
+
 

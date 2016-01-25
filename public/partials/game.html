@@ -3,15 +3,16 @@
         {{hostName}}  {{hostScore}}
     </div>
     <div class="title">
-        TwentyFour
+        Twenty Four
     </div>
     <div name="playerDetails" class="score header-right">
         {{playerName}}  {{playerScore}}
     </div>
 </div>
 <div class="game-center">
-    <overlay-directive ng-if="endOfRound || waitingForOpposition || settingUpGame || roundSkipped" winner-of-round="winnerOfRound"
-                       waiting-for-opposition="waitingForOpposition" setting-up-game="settingUpGame" round-skipped="roundSkipped" solution="solution"></overlay-directive>
+    <overlay-directive ng-if="endOfRound || waitingForOpposition || settingUpGame || roundSkipped || endOfGame" winner-of-round="winnerOfRound"
+                       waiting-for-opposition="waitingForOpposition" setting-up-game="settingUpGame" round-skipped="roundSkipped" solution="solution"
+                       end-of-game="endOfGame" player-details="playerDetails"></overlay-directive>
 
     <div ng-if="gameInProgress && !endOfRound">
         <div class="title-message center-large-text" ng-if="deck.length <= 0">

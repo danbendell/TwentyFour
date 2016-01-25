@@ -2,11 +2,19 @@
     <div class="overlay"></div>
     <div class="center-container">
         <div class="absolute-center">
+            <div class="center-large-text center-message" ng-if="endOfGame">
+                Game Over! <br> Final Score
+                <br>
+                {{playerDetails[0].name}} - {{playerDetails[0].score}} &nbsp;
+                {{playerDetails[1].name}} - {{playerDetails[1].score}}
+                <br><br>
+                <input class="calc-button" type="button" value="Main Menu" ng-click="returnToMainMenu()">
+            </div>
             <div class="center-large-text center-message" ng-if="winnerOfRound">
                 <p>24, Correct!!</p>
                 <div class="loader1"></div>
             </div>
-            <div class="center-large-text center-message" ng-if="!winnerOfRound && !waitingForOpposition && !settingUpGame && !roundSkipped">
+            <div class="center-large-text center-message" ng-if="!winnerOfRound && !waitingForOpposition && !settingUpGame && !roundSkipped && !endOfGame">
                 <p>Too Slow, the opposition gave the correct answer</p>
                 <div class="loader1"></div>
             </div>

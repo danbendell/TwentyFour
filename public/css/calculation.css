@@ -1,5 +1,5 @@
 .card-options {
-    display: flex;
+    display: -webkit-inline-box;
 }
 
 .calc-left-items {
@@ -8,27 +8,35 @@
 }
 
 .extra-space {
-    margin-right: 4px;
+    margin-right: 3px;
 }
 
 .calc-left-size {
-    width: 74%;
-    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.top-row {
+    display: table-caption;
 }
 
 .calc-right-side {
-    display: table-caption;
+
 }
 
 .calc-right-items  {
     margin-bottom: 10px;
 }
 
+#calculation-layout {
+    display: -webkit-inline-box;
+}
+
 #calculation-area {
-    display: -webkit-box;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    margin: auto;
-    width: 39%;
+    text-align: center;
+    width: 100%;
+    /*margin: auto;*/
+    /*width: 39%;*/
     padding: 10px;
 }
 
@@ -44,8 +52,10 @@
     color: white;
     background-color: #CC4331;
     border-radius: 4px;
-    width: 115px;
-    height: 40px;
+    padding-left: 5px;
+    padding-right: 5px;
+    min-width: 115px;
+    min-height: 40px;
     text-shadow: 0 -1px -1px #af3a2a;
     -moz-box-shadow: 0 4px 0 #af3a2a, 0 5px 5px 1px rgba(0, 0, 0, 0.4);
     -webkit-box-shadow: 0 4px 0 #af3a2a, 0 5px 5px 1px rgba(0, 0, 0, 0.4);
@@ -90,7 +100,7 @@
 
 .calc-box {
     text-align: center;
-    width: 60%;
+    width: 70%;
     -webkit-box-shadow: 0 4px 0 #af3a2a, 0 5px 5px 1px rgba(0, 0, 0, 0.4);
     box-shadow: 0 4px 0 #af3a2a, 0 5px 5px 1px rgba(0, 0, 0, 0.4);
     font-size: 22px;

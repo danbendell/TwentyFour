@@ -1,6 +1,7 @@
 angular.module('MainController', []).controller('MainController', ['$scope', '$location', '$rootScope', 'SocketService', function($scope, $location, $rootScope, SocketService) {
     $scope.socket = SocketService.getSocket();
     $scope.gameRooms = [];
+    $scope.openGameRooms = [];
     $scope.intervalTime = 0;
 
     $scope.HostGame = function() {
@@ -13,16 +14,22 @@ angular.module('MainController', []).controller('MainController', ['$scope', '$l
 
     $scope.socket.on('gameRoomList', function(GameRooms) {
         $scope.$apply(function () {
+            console.log(GameRooms);
             $scope.gameRooms = GameRooms;
+            for(var i = 0; i < $scope.gameRooms.length; i++) {
+                if($scope.gameRooms[i].status == 1) {
+                    $scope.openGameRooms.push($scope.gameRooms[i]);
+                }
+            }
         });
     });
 
-    $scope.JoinGame = function(roomData) {
+    $scope.JoinGame = function() {
         var player = {
             id: '',
             name: $scope.username
         };
-        $scope.socket.emit('playerJoinGame', roomData, player);
+        $scope.socket.emit('playerJoinGame', $scope.openGameRooms[0], player);
     };
 
     //var newCombination = '';

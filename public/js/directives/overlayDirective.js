@@ -6,7 +6,9 @@ angular.module('OverlayDirective', []).directive('overlayDirective', function ()
             waitingForOpposition: '=',
             settingUpGame: '=',
             roundSkipped: '=',
-            solution: '='
+            solution: '=',
+            endOfGame: '=',
+            playerDetails: '='
         },
         templateUrl: 'partials/overlay.html',
         replace: true,

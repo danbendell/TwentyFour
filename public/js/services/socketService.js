@@ -32,6 +32,10 @@ angular.module('SocketService', []).factory('SocketService', ['$rootScope', '$lo
         });
     }
 
+    function MoveToMenuScreen() {
+        $location.path("/");
+    }
+
     function SearchForOpenGameRooms() {
         console.log('searching for games');
         socket.emit('getOpenGameRooms');
@@ -65,6 +69,7 @@ angular.module('SocketService', []).factory('SocketService', ['$rootScope', '$lo
         getGameRoomId: getGameRoomId,
         getHostStatus: getHostStatus,
         getSocket: getSocket,
-        getPlayerId: getPlayerId
+        getPlayerId: getPlayerId,
+        MoveToMenuScreen: MoveToMenuScreen
     }
 }]);

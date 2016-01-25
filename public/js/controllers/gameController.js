@@ -8,6 +8,7 @@ angular.module('GameController', []).controller('GameController', ['$scope', '$r
     $scope.settingUpGame = false;
     $scope.gameInProgress = false;
     $scope.endOfRound = false;
+    $scope.endOfGame = false;
     $scope.winnerOfRound = false;
     $scope.roundSkipped = false;
 
@@ -40,6 +41,10 @@ angular.module('GameController', []).controller('GameController', ['$scope', '$r
             $scope.currentCards.push(FindCard());
             $scope.currentCards.push(FindCard());
             $scope.currentCards.push(FindCard());
+        } else {
+            console.log("Deck Empty");
+            GameOver();
+            return;
         }
 
         if(combinationIsPossible()) {
@@ -54,6 +59,7 @@ angular.module('GameController', []).controller('GameController', ['$scope', '$r
             $scope.deck = $scope.tempDeck.slice(0);
             if($scope.deck.length <= 4) {
                 console.log("Can't complete the last hand!!!");
+                GameOver();
             } else {
                 $scope.PickNextCards();
             }
@@ -98,13 +104,18 @@ angular.module('GameController', []).controller('GameController', ['$scope', '$r
         console.log('END OF ROUND');
         $scope.playerDetails = gameDetails;
         setPlayersDetails();
-        $scope.$apply(function() {
-            if(player.id == SocketService.getPlayerId()) {
-                $scope.winnerOfRound = true;
-            }
-            $scope.endOfRound = true;
-        });
-        $scope.$broadcast("startCountdown", {});
+        if($scope.deck.length > 0) {
+            $scope.$apply(function() {
+                if(player.id == SocketService.getPlayerId()) {
+                    $scope.winnerOfRound = true;
+                }
+                $scope.endOfRound = true;
+            });
+            $scope.$broadcast("startCountdown", {});
+        } else {
+            GameOver();
+        }
+
     });
 
     $scope.socket.on('newCardsFromHost', function() {
@@ -153,14 +164,30 @@ angular.module('GameController', []).controller('GameController', ['$scope', '$r
 
         $scope.playerDetails = gameDetails;
         if($scope.playerDetails[0].passed && $scope.playerDetails[1].passed) {
-            $scope.$apply(function() {
-                $scope.roundSkipped = true;
-                $scope.endOfRound = true;
-            });
-            $scope.socket.emit('roundSkipped', SocketService.getGameRoomId());
-            $rootScope.$broadcast("startCountdown", {});
+            if($scope.deck.length == 0) {
+                GameOver();
+            } else {
+                $scope.$apply(function() {
+                    $scope.roundSkipped = true;
+                    $scope.endOfRound = true;
+                });
+                $scope.socket.emit('roundSkipped', SocketService.getGameRoomId());
+                $rootScope.$broadcast("startCountdown", {});
+            }
         }
     });
+
+    $scope.socket.on("showFinalScore", function() {
+        console.log("GAME OVER");
+        $scope.$apply(function() {
+            $scope.endOfRound = true;
+            $scope.endOfGame = true;
+        });
+    });
+
+    function GameOver() {
+        $scope.socket.emit('gameOver', SocketService.getGameRoomId());
+    }
 
     function combinationIsPossible() {
         var possible = false;

@@ -50,6 +50,17 @@ module.exports = function(io) {
             io.sockets.in(gameId).emit("newPlayerDetails", gameDetails);
         });
 
+        socket.on('gameOver', function(gameId) {
+            io.sockets.in(gameId).emit("showFinalScore");
+        });
+
+        socket.on('playerLeftRoom', function(roomId, playerId) {
+            console.log("player leaving - " + roomId);
+            socket.leave(roomId);
+            resetPlayer(playerId);
+            console.log(GameData.players);
+        });
+
         socket.on('disconnect', function() {
             RemovePlayer(socket);
         });
@@ -111,6 +122,17 @@ module.exports = function(io) {
         player.score = 0;
         player.passed = false;
         GameData.players.push(player);
+    }
+
+    function resetPlayer(playerId) {
+        for (var i = 0; i < GameData.players.length; i++) {
+            if (GameData.players[i].id == playerId) {
+                GameData.players[i].isHost = false;
+                GameData.players[i].roomId = "";
+                GameData.players[i].score = 0;
+                GameData.players[i].passed = false;
+            }
+        }
     }
 
     function resetPassedValues(gameId) {
