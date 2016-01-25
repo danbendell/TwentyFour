@@ -107,20 +107,36 @@ angular.module('MainController', []).controller('MainController', ['$scope', '$l
                     if(numberOfStepsComplete <= 1) {
                         //One or no brackets
                         if(numberOfStepsComplete == 1) {
+                            var beforeBracket = false;
+                            thirdEquestion = '';
                             thirdEquestion = solution.substring(solution.indexOf(")") + 1, solution.length);
-
+                            thirdEquestion = thirdEquestion.replace(/ /g, '');
+                            thirdEquestion = thirdEquestion.replace(/\n/g, '');
+                            if(thirdEquestion.length <= 1) thirdEquestion = "";
+                            if(thirdEquestion == "") {
+                                thirdEquestion = solution.substring(0, solution.indexOf("("));
+                                beforeBracket = true;
+                            }
                             numberArray = thirdEquestion.split(new RegExp(separators.join('|'), 'g'));
-                            if(numberArray.length == 3) numberArray = numberArray.slice(1, 3);
 
+                            for(var i = 0; i < numberArray.length; i++) {
+                                if(numberArray[i] == "") numberArray.splice(i, 1);
+                            }
                             var opperandList = thirdEquestion.replace(/\d+/g, '');
                             var opperandArray = opperandList.split("");
 
-                            if((opperandArray[1] == '*' || opperandArray[1] == '/') && (opperandArray[0] != '*' || opperandArray[0] != '/')) {
+                            if((opperandArray[1] == '*' || opperandArray[1] == '/') && (opperandArray[0] != '*' && opperandArray[0] != '/')) {
                                 newCombination += '\t\t\t"' + getStep() + '":"' + numberArray[0] + ' ' + opperandArray[1] + ' ' + numberArray[1] + '", \n';
                                 currentAnswer = calculate(numberArray[0], numberArray[1], opperandArray[1]);
                                 answerTwo = currentAnswer;
 
                                 newCombination += '\t\t\t"' + getStep() + '":"' + answerOne + ' ' + opperandArray[0] + ' ' + answerTwo + '" \n';
+                            } else if((opperandArray[1] == '*' || opperandArray[1] == '/') && (opperandArray[0] == '*' || opperandArray[0] == '/') && beforeBracket) {
+                                newCombination += '\t\t\t"' + getStep() + '":"' + numberArray[0] + ' ' + opperandArray[0] + ' ' + numberArray[1] + '", \n';
+                                currentAnswer = calculate(numberArray[0], numberArray[1], opperandArray[0]);
+                                answerTwo = currentAnswer;
+
+                                newCombination += '\t\t\t"' + getStep() + '":"' + answerTwo + ' ' + opperandArray[1] + ' ' + answerOne + '" \n';
                             } else {
                                 newCombination += '\t\t\t"' + getStep() + '":"' + answerOne + ' ' + opperandArray[0] + ' ' + numberArray[0] + '", \n';
                                 currentAnswer = calculate(answerOne, numberArray[0], opperandArray[0]);
@@ -136,16 +152,28 @@ angular.module('MainController', []).controller('MainController', ['$scope', '$l
                             var opperandList = thirdEquestion.replace(/\d+/g, '');
                             var opperandArray = opperandList.split("");
 
-                            newCombination += '\t\t\t"' + getStep() + '":"' + numberArray[0] + ' ' + opperandArray[0] + ' ' + numberArray[1] + '", \n';
-                            currentAnswer = calculate(numberArray[0], numberArray[1], opperandArray[0]);
-                            answerOne = currentAnswer;
+                            if((opperandArray[0] == "*" || opperandArray[0] == "/") && (opperandArray[2] == "*" || opperandArray[2] == "/") && (opperandArray[1] != "*" || opperandArray[1] != "/")) {
+                                newCombination += '\t\t\t"' + getStep() + '":"' + numberArray[0] + ' ' + opperandArray[0] + ' ' + numberArray[1] + '", \n';
+                                currentAnswer = calculate(numberArray[0], numberArray[1], opperandArray[0]);
+                                answerOne = currentAnswer;
 
-                            newCombination += '\t\t\t"' + getStep() + '":"' + answerOne + ' ' + opperandArray[1] + ' ' + numberArray[2] + '", \n';
-                            currentAnswer = calculate(answerOne, numberArray[2], opperandArray[1]);
-                            answerTwo = currentAnswer;
+                                newCombination += '\t\t\t"' + getStep() + '":"' + numberArray[2] + ' ' + opperandArray[2] + ' ' + numberArray[3] + '", \n';
+                                currentAnswer = calculate(numberArray[2], numberArray[3], opperandArray[2]);
+                                answerTwo = currentAnswer;
 
-                            newCombination += '\t\t\t"' + getStep() + '":"' + answerTwo + ' ' + opperandArray[2] + ' ' + numberArray[3] + '" \n';
+                                newCombination += '\t\t\t"' + getStep() + '":"' + answerOne + ' ' + opperandArray[1] + ' ' + answerTwo + '" \n';
+                            } else {
 
+                                newCombination += '\t\t\t"' + getStep() + '":"' + numberArray[0] + ' ' + opperandArray[0] + ' ' + numberArray[1] + '", \n';
+                                currentAnswer = calculate(numberArray[0], numberArray[1], opperandArray[0]);
+                                answerOne = currentAnswer;
+
+                                newCombination += '\t\t\t"' + getStep() + '":"' + answerOne + ' ' + opperandArray[1] + ' ' + numberArray[2] + '", \n';
+                                currentAnswer = calculate(answerOne, numberArray[2], opperandArray[1]);
+                                answerTwo = currentAnswer;
+
+                                newCombination += '\t\t\t"' + getStep() + '":"' + answerTwo + ' ' + opperandArray[2] + ' ' + numberArray[3] + '" \n';
+                            }
                         }
 
                     }
@@ -159,6 +187,7 @@ angular.module('MainController', []).controller('MainController', ['$scope', '$l
                 numberOfStepsComplete = 0;
                 answerOne = null;
                 answerTwo = null;
+                thirdEquestion = '';
             }
         };
         console.log(newCombination);
