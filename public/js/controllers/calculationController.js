@@ -35,9 +35,9 @@ angular.module('CalculationController', []).controller('CalculationController', 
 
     $scope.CalculateEquation = function() {
         var result;
-        var firstNumber = parseInt($scope.calcBoxData[0]);
+        var firstNumber = parseFloat($scope.calcBoxData[0]);
         var operand = $scope.calcBoxData[1];
-        var secondNumber = parseInt($scope.calcBoxData[2]);
+        var secondNumber = parseFloat($scope.calcBoxData[2]);
         result = ApplyOperand(firstNumber, operand, secondNumber);
 
         $scope.currentValues.splice(PositionMatchingValue(firstNumber), 1);
