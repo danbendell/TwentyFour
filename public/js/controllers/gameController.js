@@ -214,7 +214,8 @@ angular.module('GameController', []).controller('GameController', ['$scope', '$r
         comparisonArray = comparisonArray.sort(function(a, b) {
             return a.numericValue - b.numericValue;
         });
-        for(var i = 0; i < $scope.combinations.length; i++) {
+        var startPosition = GameService.getOptimalStartPosition(comparisonArray[0].numericValue);
+        for(var i = startPosition; i < $scope.combinations.length; i++) {
             if(comparisonArray[0].numericValue == $scope.combinations[i].valueOne &&
                 comparisonArray[1].numericValue == $scope.combinations[i].valueTwo &&
                 comparisonArray[2].numericValue == $scope.combinations[i].valueThree &&

@@ -9,7 +9,7 @@ angular.module('MainController', []).controller('MainController', ['$scope', '$l
             id: '',
             name: $scope.username
         };
-        $scope.socket.emit('createNewGame', player);
+       $scope.socket.emit('createNewGame', player);
     };
 
     $scope.socket.on('gameRoomList', function(GameRooms) {
